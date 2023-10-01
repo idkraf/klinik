@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:klinikkecantikan/screens/Home.dart';
-import 'package:klinikkecantikan/widgets/text_widget.dart';
+import 'package:klinikkecantikan/custom/text_widget.dart';
+import 'package:package_info/package_info.dart';
 class Splash extends StatefulWidget
 {
   const Splash({super.key});
@@ -14,11 +14,26 @@ class Splash extends StatefulWidget
 class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   bool position=false;
   var opacity=0.0;
+
+  PackageInfo _packageInfo = PackageInfo(
+    appName: AppConfig.app_name,
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+  );
+
+  Future<void> _initPackageInfo() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _initPackageInfo();
     Future.delayed(Duration.zero,(){
       animator();
     });
@@ -104,7 +119,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                     setState(() {
                     });
                     Timer(const Duration(milliseconds: 400),() {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home(),));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home(),));
                     },);
                   },
                   child: AnimatedOpacity(

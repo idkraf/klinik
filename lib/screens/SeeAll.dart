@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:klinikkecantikan/screens/Home.dart';
-import 'package:klinikkecantikan/widgets/text_widget.dart';
+import 'package:klinikkecantikan/custom/text_widget.dart';
 import 'package:klinikkecantikan/res/lists.dart';
 
 import 'Chat.dart';
@@ -109,11 +109,11 @@ class _SeeAllState extends State<SeeAll> {
                             animator();
                             await Future.delayed(
                                 const Duration(milliseconds: 500));
-                            await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Chat(image: images[index],name: names[index],specialist: spacilality[index]),
-                                ));
+                            //await Navigator.push(
+                            //    context,
+                            //    MaterialPageRoute(
+                            //      builder: (context) => Chat(image: images[index],name: names[index],specialist: spacilality[index]),
+                            //    ));
                             animator();
                           },
                           child: Card(
@@ -330,7 +330,7 @@ class _SeeAllState extends State<SeeAll> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const Home(),
+                      builder: (context) => Home(),
                     ));
               });
             },

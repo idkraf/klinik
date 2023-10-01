@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:klinikkecantikan/widgets/text_widget.dart';
+import 'package:klinikkecantikan/custom/text_widget.dart';
 
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 

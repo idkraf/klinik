@@ -27,6 +27,7 @@ import 'package:toast/toast.dart';
 
 import '../custom/toast_component.dart';
 import '../helpers/reg_ex_inpur_formatter.dart';
+import '../repositories/blog_repository.dart';
 import '../repositories/wallet_repository.dart';
 import 'checkout.dart';
 
@@ -87,7 +88,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   bool _showAllLoadingContainer = false;
   int _cartCount = 0;
 
+  var blogResponse = [];
   var _balanceDetails = null;
+
+  fetchJurnal() async{
+    var response = await BlogRepository().getHomeBlogs();
+    response.blogs!.forEach((fff) {
+      blogResponse.add(fff);
+    });
+    setState(() {});
+  }
 
   TextEditingController _amountController = TextEditingController();
   final _amountValidator = RegExInputFormatter.withRegex(
@@ -135,10 +145,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     }
     fetchCarouselImages();
     fetchBannerOneImages();
-    fetchBannerTwoImages();
-    fetchFeaturedCategories();
-    fetchFeaturedProducts();
-    fetchAllProducts();
+    fetchJurnal();
+    //fetchBannerTwoImages();
+    //fetchFeaturedCategories();
+    //fetchFeaturedProducts();
+    //fetchAllProducts();
   }
 
   fetchBalanceDetails() async {
@@ -273,10 +284,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         child: SafeArea(
           child: Scaffold(
               key: _scaffoldKey,
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(76),
-                child: buildAppBar(statusBarHeight, context),
-              ),
+              //appBar: PreferredSize(
+              //  preferredSize: Size.fromHeight(76),
+              //  child: buildAppBar(statusBarHeight, context),
+              //),
               //drawer: MainDrawer(),
               body: Stack(
                 children: [
@@ -294,7 +305,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           delegate: SliverChildListDelegate([
                             buildHomeCarouselSlider(context),
                             //get data wallet user
-                            _balanceDetails != null &&  _balanceDetails.saldo < 100000 ?
+                            _balanceDetails != null ?
                             Container(
                                 height: 90,margin: const EdgeInsets.fromLTRB(
                               18.0,
@@ -306,31 +317,24 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               8.0,
                               0, 0,
                             ),
-                                decoration: BoxDecorations.buildBoxDecoration_1(),child:Center(child:Column(children: [
-                              Text(
-                                "Dompet anda kosong.",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              TextButton(
-                                  style: TextButton.styleFrom(
-                                      backgroundColor: MyTheme.accent_color,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: const Radius.circular(4.0),
-                                            bottomLeft: const Radius.circular(4.0),
-                                            topRight: const Radius.circular(4.0),
-                                            bottomRight: const Radius.circular(4.0),
-                                          ))),
-                                  onPressed: (){
-                                    buildShowAddFormDialog(context);
-                                  },
-                                  child:Text(
-                                    "Topup sekarang, Rp. 100.000",
-                                    style: TextStyle(color: Colors.white),
-                                  ))
+                                decoration: BoxDecorations.buildBoxDecoration_1(),child:Center(child:
+                            Row(children: [
+                              Column(children: [
+                                Text(
+                                  _balanceDetails,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                const Text(
+                                  "Top Up Dompet",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ],)
                             ],)
+
                             )):Container(),//ShimmerHelper().buildBasicShimmer(height: 90),
 
                             Padding(
@@ -341,6 +345,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 0.0,
                               ),
                               child: buildHomeMenuRow1(context),
+                            ),
+                            SizedBox(height: 10,),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                18.0,
+                                0.0,
+                                18.0,
+                                0.0,
+                              ),
+                              child: buildHomeMenuRow2(context),
                             ),
                             // buildHomeBannerOne(context),
                             //  // Padding(
@@ -354,35 +368,35 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             // ),
                           ]),
                         ),
-                        SliverList(
-                          delegate: SliverChildListDelegate([
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                18.0,
-                                20.0,
-                                18.0,
-                                0.0,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!.home_screen_featured_categories,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ]),
-                        ),
-                        SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: 154,
-                            child: buildHomeFeaturedCategories(context),
-                          ),
-                        ),
+                        //SliverList(
+                        //  delegate: SliverChildListDelegate([
+                        //    Padding(
+                        //      padding: const EdgeInsets.fromLTRB(
+                        //        18.0,
+                        //        20.0,
+                        //        18.0,
+                        //        0.0,
+                        //      ),
+                        //      child: Column(
+                        //        crossAxisAlignment: CrossAxisAlignment.start,
+                        //        children: [
+                        //          Text(
+                        //            AppLocalizations.of(context)!.home_screen_featured_categories,
+                        //            style: TextStyle(
+                        //                fontSize: 18,
+                        //               fontWeight: FontWeight.w700),
+                        //          ),
+                        //        ],
+                        //      ),
+                        //    ),
+                        //  ]),
+                        //),
+                        //SliverToBoxAdapter(
+                        //  child: SizedBox(
+                        //    height: 154,
+                        //    child: buildHomeFeaturedCategories(context),
+                        //  ),
+                        //),
                         //SliverList(
                         // delegate: SliverChildListDelegate([
                         //     Container(
@@ -441,7 +455,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)!.home_screen_all_products,
+                                    "Baca Artikel",
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w700),
@@ -449,13 +463,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 ],
                               ),
                             ),
-                            SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  buildHomeAllProducts2(context),
-                                ],
-                              ),
-                            ),
+                            //SingleChildScrollView(
+                            //  child: Column(
+                            //    children: [
+                            //      buildHomeAllProducts2(context),
+                            //    ],
+                            //  ),
+                            //),
                             Container(
                               height: 80,
                             )
@@ -1082,7 +1096,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
-  Widget  buildHomeCarouselSlider(context) {
+  Widget buildHomeCarouselSlider(context) {
     if (_isCarouselInitial && _carouselImageList.length == 0) {
       return Padding(
           padding:
@@ -1171,7 +1185,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     }
   }
 
-  Widget  buildHomeBannerOne(context) {
+  Widget buildHomeBannerOne(context) {
     if (_isBannerOneInitial && _bannerOneImageList.length == 0) {
       return Padding(
           padding:
@@ -1386,138 +1400,4 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   }
 
-  Future buildShowAddFormDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (_) => Directionality(
-          textDirection: app_language_rtl.$ ? TextDirection.rtl : TextDirection.ltr,
-          child: AlertDialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 10),
-            contentPadding: EdgeInsets.only(
-                top: 36.0, left: 36.0, right: 36.0, bottom: 2.0),
-            content: Container(
-              width: 400,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    Padding(
-                      padding: const EdgeInsets.only(top:8.0,bottom: 8.0),
-                      child: Text( "Isi dompet kamu sekarang!",
-                          style: TextStyle(
-                              color: MyTheme.dark_font_grey, fontSize: 13,fontWeight: FontWeight.bold)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-                        height: 40,
-                        child: TextField(
-                          controller: _amountController,
-                          readOnly: true,
-                          autofocus: false,
-                          keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                          inputFormatters: [_amountValidator],
-                          decoration: InputDecoration(
-                              fillColor: MyTheme.light_grey,
-                              filled: true,
-                              hintText:  AppLocalizations.of(context)!.wallet_screen_enter_amount,
-                              hintStyle: TextStyle(
-                                  fontSize: 12.0,
-                                  color: MyTheme.textfield_grey),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: MyTheme.noColor,
-                                    width: 0.0),
-                                borderRadius: const BorderRadius.all(
-                                  const Radius.circular(8.0),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: MyTheme.noColor,
-                                    width:0.0),
-                                borderRadius: const BorderRadius.all(
-                                  const Radius.circular(8.0),
-                                ),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0)),
-                        ),
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Text("Jika tidak ada transaksi, akun akan dihapus dalam waktu 7hari",
-                          style: TextStyle(
-                              color: MyTheme.accent_color, fontSize: 10,fontWeight: FontWeight.bold)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: TextButton(
-
-                      style: TextButton.styleFrom(
-                        //minWidth: 75,
-                        //height: 30,
-                          minimumSize:  Size(75, 30),
-                          backgroundColor: Color.fromRGBO(253, 253, 253, 1),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6.0),
-                              side: BorderSide(
-                                  color: MyTheme.accent_color, width: 1.0))
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.common_close_ucfirst,
-                        style: TextStyle(
-
-                          fontSize: 10,
-                          color: MyTheme.accent_color,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context, rootNavigator: true).pop();
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 1,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                    child: TextButton(
-
-                      style: TextButton.styleFrom(
-                          minimumSize:  Size(75, 30),
-                          backgroundColor: MyTheme.accent_color,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),)
-                      ),
-                      child: Text(
-                        "${AppLocalizations.of(context)!.common_proceed} Sekarang",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.normal),
-                      ),
-                      onPressed: () {
-                        onPressProceed();
-                      },
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ));
-  }
 }

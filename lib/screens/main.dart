@@ -16,6 +16,8 @@ import 'package:flutter/services.dart';
 import 'package:klinikkecantikan/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:badges/badges.dart' as Teta;
+import 'package:klinikkecantikan/screens/shop_main.dart';
+import 'package:klinikkecantikan/screens/tensor/gallery.dart';
 import 'package:route_transitions/route_transitions.dart';
 
 class Main extends StatefulWidget {
@@ -70,9 +72,11 @@ class _MainState extends State<Main> {
   void initState() {
     _children = [
       Home(counter: counter,),
-      CategoryList(
-        is_base_category: true,
-      ),
+      //CategoryList(
+      //  is_base_category: true,
+      //),
+      ShopMain(),
+      GalleryScreen(),
       Cart(has_bottomnav: true,from_navigation:true,counter: counter,),
       Profile()
     ];
@@ -108,7 +112,7 @@ class _MainState extends State<Main> {
           body: _children[_currentIndex],
           bottomNavigationBar: BottomAppBar(
             color: Colors.transparent,
-
+            shape: const CircularNotchedRectangle(),
             clipBehavior: Clip.antiAlias,
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
@@ -140,7 +144,7 @@ class _MainState extends State<Main> {
                         icon: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Image.asset(
-                            "assets/categories.png",
+                            "assets/shop.png",
                             color: _currentIndex == 1
                                 ? MyTheme.accent_color
                                 : Color.fromRGBO(153, 153, 153, 1),
@@ -148,6 +152,19 @@ class _MainState extends State<Main> {
                           ),
                         ),
                         label: AppLocalizations.of(context)!.main_screen_bottom_navigation_categories),
+                    BottomNavigationBarItem(
+                        icon: Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Image.asset(
+                            "assets/categories.png",
+                            color: _currentIndex == 1
+                                ? MyTheme.accent_color
+                                : Color.fromRGBO(153, 153, 153, 1),
+                            height: 16,
+                          ),
+                        ),
+                      label: ""
+                    ),
                     BottomNavigationBarItem(
                         icon: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
@@ -195,6 +212,24 @@ class _MainState extends State<Main> {
                   ],
                 ),
               ),
+            ),
+          ),
+          floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              backgroundColor: _currentIndex == 2 ? Colors.blue : Colors.white,
+              child: Image.asset(
+                "assets/categories.png",
+                color: _currentIndex == 2
+                    ? MyTheme.accent_color
+                    : Color.fromRGBO(153, 153, 153, 1),
+                height: 26,
+              ),//Icon(Icons.home),
+              onPressed: () => setState(() {
+                _currentIndex = 2;
+              }),
             ),
           ),
         ),

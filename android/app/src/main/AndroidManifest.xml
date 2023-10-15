@@ -10,7 +10,7 @@
          FlutterApplication and put your custom class here. -->
 
     <application
-        android:label="klinikkecantikan"
+        android:label="Naba Skin"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

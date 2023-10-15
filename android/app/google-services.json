@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "352358463565",
+    "project_id": "naba-skin",
+    "storage_bucket": "naba-skin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352358463565:android:f348cfe0a8895d27374404",
+        "android_client_info": {
+          "package_name": "com.naba.skin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUdYlLYRp9elJI0FLziQ9Zvha-pRvMU1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
